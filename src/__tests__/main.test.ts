@@ -4,7 +4,8 @@ import { evaluate } from '../main'
 describe('Main', () => {
   for (let i = 1; i < 3; i++) {
     it(`works ${i}`, async () => {
-      const output = await evaluate(__dirname + `/test-${i}.log`)
+      const text = (await fs.readFile(__dirname + `/test-${i}.log`)).toString();
+      const output = evaluate(text);
       const result = JSON.parse(
         (await fs.readFile(__dirname + `/test-${i}.results.json`)).toString()
       )
