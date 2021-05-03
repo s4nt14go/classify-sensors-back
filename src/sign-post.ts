@@ -20,7 +20,7 @@ export const sign: APIGatewayProxyHandler = wrapper(async (event: APIGatewayEven
     },
     Expires: 300,
     Conditions: [
-      ["content-length-range", 0, 524288]
+      ["content-length-range", 0, 524288],  // Max size 512KB
     ]
   };
 

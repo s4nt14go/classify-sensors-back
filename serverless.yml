@@ -55,7 +55,7 @@ functions:
     handler: src/sign-post.sign
     events:
       - http:
-          path: /signed-post
+          path: /sign-post
           method: get
     environment:
       UPLOAD_BUCKET: !Ref UploadBucket
