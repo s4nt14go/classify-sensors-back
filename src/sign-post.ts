@@ -1,6 +1,5 @@
 import * as AWS from 'aws-sdk';
 import {APIGatewayEvent, APIGatewayProxyResult} from "aws-lambda";
-import {ulid} from "ulid";
 
 const { UPLOAD_BUCKET } = process.env;
 
@@ -9,12 +8,14 @@ const s3 = new AWS.S3();
 export async function sign(event: APIGatewayEvent): Promise<APIGatewayProxyResult> {
   console.log('event:\n', JSON.stringify(event));
 
-  const id = ulid();
+  const sessionId = event.queryStringParameters?.sessionId? event.queryStringParameters.sessionId : 'no-sessionId';
+  const filename = event.queryStringParameters?.filename? event.queryStringParameters.filename : 'no-filename';
+  const key = sessionId + '_' + filename;
 
   const params = {
     Bucket: UPLOAD_BUCKET,
     Fields: {
-      key: id
+      key,
     },
     Expires: 300,
     Conditions: [
@@ -27,7 +28,7 @@ export async function sign(event: APIGatewayEvent): Promise<APIGatewayProxyResul
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ id, data }),
+    body: JSON.stringify({ data }),
     headers: {
       'Access-Control-Allow-Origin': '*'
     }
