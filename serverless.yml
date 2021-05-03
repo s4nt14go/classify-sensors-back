@@ -7,11 +7,13 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   bundle:
     sourcemaps: false # avoid 'x is not a function' error with imports
+  onFailureQueueForClassifyName: ${self:service}-${self:custom.stage}-OnFailureQueueForClassify
 
 plugins:
   - serverless-bundle # Package our functions with Webpack
   - serverless-offline
   - serverless-iam-roles-per-function
+  - serverless-pseudo-parameters
 
 provider:
   name: aws
@@ -30,6 +32,9 @@ functions:
     environment:
       OUTPUT_BUCKET: !Ref OutputBucket
       TABLE: !Ref Table
+    maximumRetryAttempts: 0 # For testing purposes let's assume that when we get an error, it's unrecoverable so we don't want to wait lambda for the 2 default retries, it will send the error straight to onFailureQueueForClassify
+    destinations:
+      onFailure: arn:aws:sqs:#{AWS::Region}:#{AWS::AccountId}:${self:custom.onFailureQueueForClassifyName}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -42,6 +47,9 @@ functions:
       - Effect: Allow
         Action: dynamodb:PutItem
         Resource: !GetAtt Table.Arn
+      - Effect: Allow
+        Action: SQS:SendMessage
+        Resource: !GetAtt OnFailureQueueForClassify.Arn
 
   sign-post:
     handler: src/sign-post.sign
@@ -101,3 +109,8 @@ resources:
             AttributeType: S
           - AttributeName: filename
             AttributeType: S
+
+    OnFailureQueueForClassify:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:custom.onFailureQueueForClassifyName}
