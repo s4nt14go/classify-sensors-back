@@ -21,7 +21,7 @@ provider:
 
 functions:
   classify:
-    handler: src/handler.classify
+    handler: src/classify.classify
     events:
       - s3:
           bucket: !Ref UploadBucket
