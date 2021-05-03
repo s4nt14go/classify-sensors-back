@@ -1,11 +1,12 @@
 import * as AWS from 'aws-sdk';
-import {APIGatewayEvent, APIGatewayProxyResult} from "aws-lambda";
+import {APIGatewayEvent, APIGatewayProxyHandler} from "aws-lambda";
+import { wrapperForApiG as wrapper } from './lib';
 
 const { UPLOAD_BUCKET } = process.env;
 
 const s3 = new AWS.S3();
 
-export async function sign(event: APIGatewayEvent): Promise<APIGatewayProxyResult> {
+export const sign: APIGatewayProxyHandler = wrapper(async (event: APIGatewayEvent) => {
   console.log('event:\n', JSON.stringify(event));
 
   const sessionId = event.queryStringParameters?.sessionId? event.queryStringParameters.sessionId : 'no-sessionId';
@@ -26,14 +27,8 @@ export async function sign(event: APIGatewayEvent): Promise<APIGatewayProxyResul
   console.log('params', params)
   const data = await createPresignedPostPromise(params);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ data }),
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  };
-}
+  return { data };
+});
 
 function createPresignedPostPromise(params: AWS.S3.PresignedPost.Params) {
   return new Promise((resolve, reject) => {
