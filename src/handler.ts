@@ -2,7 +2,7 @@ import {S3Handler} from "aws-lambda";
 import * as AWS from 'aws-sdk';
 const s3 = new AWS.S3();
 import '../environment'
-const { BUCKET_OUTPUT } = process.env;
+const { OUTPUT_BUCKET } = process.env;
 import { evaluate } from './main';
 
 export const classify: S3Handler = async (event, _context) => {
@@ -14,6 +14,7 @@ export const classify: S3Handler = async (event, _context) => {
   if (event.Records[0]) {
     const Bucket = event.Records[0].s3.bucket.name;
     const Key = decodeURIComponent(filename.replace(/\+/g, " "));
+    console.log(`Getting Bucket: ${Bucket}; Key: ${Key}`);
     const data = await s3.getObject({ Bucket, Key }).promise();
     const text = data.Body?.toString();
     classification = evaluate(text);
@@ -27,8 +28,8 @@ export const classify: S3Handler = async (event, _context) => {
 
   await s3.putObject({
     Body: JSON.stringify(classification, null, 2),
-    Bucket: BUCKET_OUTPUT,
+    Bucket: OUTPUT_BUCKET,
     Key: outputFilename,
   }).promise();
-  console.log(`Put it as ${outputFilename} in bucket: ${BUCKET_OUTPUT}`);
+  console.log(`Put it as ${outputFilename} in bucket: ${OUTPUT_BUCKET}`);
 };
