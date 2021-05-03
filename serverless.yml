@@ -29,6 +29,7 @@ functions:
           existing: true
     environment:
       OUTPUT_BUCKET: !Ref OutputBucket
+      TABLE: !Ref Table
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -38,6 +39,9 @@ functions:
         Action:
           - s3:PutObject
         Resource: !Sub ${OutputBucket.Arn}/*
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt Table.Arn
 
   sign-post:
     handler: src/sign-post.sign
@@ -70,3 +74,18 @@ resources:
                 - '*'
     OutputBucket:
       Type: AWS::S3::Bucket
+
+    Table:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: sessionId
+            KeyType: HASH
+          - AttributeName: filename
+            KeyType: RANGE
+        AttributeDefinitions:
+          - AttributeName: sessionId
+            AttributeType: S
+          - AttributeName: filename
+            AttributeType: S

@@ -4,6 +4,7 @@ declare global {
     interface ProcessEnv {
       UPLOAD_BUCKET: string;
       OUTPUT_BUCKET: string;
+      TABLE: string;
     }
   }
 }
