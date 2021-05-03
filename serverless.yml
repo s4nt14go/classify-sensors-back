@@ -49,7 +49,6 @@ functions:
       - http:
           path: /signed-post
           method: get
-          cors: true
     environment:
       UPLOAD_BUCKET: !Ref UploadBucket
     iamRoleStatements:
@@ -57,6 +56,19 @@ functions:
         Action:
           - s3:PutObject
         Resource: !Sub ${UploadBucket.Arn}/*
+
+  check-results:
+    handler: src/check-results.check
+    events:
+      - http:
+          path: /check-results
+          method: get
+    environment:
+      TABLE: !Ref Table
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:Query
+        Resource: !GetAtt Table.Arn
 
 resources:
   Resources:
