@@ -1,4 +1,4 @@
-# Description
+# Classify sensors
 
 We have a fleet of vehicles equipped with sensors for `loudness`, `bumpiness`, and `happiness`. The vehicles upload a file with this format:
 
@@ -63,4 +63,4 @@ CI/CD:
 
 # Frontend
 
-In [this repo](https://github.com/s4nt14go/classify-sensors-front) you can take a look at the frontend
+In [this repo](https://github.com/s4nt14go/classify-sensors-front) you can take a look at the frontend or go straight to the [demo site](https://prod--classify-sensors.netlify.app)!
