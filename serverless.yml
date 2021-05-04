@@ -124,7 +124,4 @@ resources:
           - ''
           - - 'https://'
             - !Ref ApiGatewayRestApi
-            - '.execute-api.'
-            - ${opt:region, self:provider.region}
-            - '.amazonaws.com/'
-            - ${self:custom.stage}
+            - '.execute-api.${opt:region, self:provider.region}.amazonaws.com/${self:custom.stage}'
