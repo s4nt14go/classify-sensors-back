@@ -14,6 +14,7 @@ plugins:
   - serverless-offline
   - serverless-iam-roles-per-function
   - serverless-pseudo-parameters
+  - serverless-export-env
 
 provider:
   name: aws
@@ -114,3 +115,9 @@ resources:
       Type: AWS::SQS::Queue
       Properties:
         QueueName: ${self:custom.onFailureQueueForClassifyName}
+
+  Outputs:
+
+    ServiceEndpoint:
+      Export:
+        Name: API-Endpoint
