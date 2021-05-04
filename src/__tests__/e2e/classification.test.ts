@@ -1,16 +1,20 @@
-require('dotenv').config();
 jest.setTimeout(15000);
+import { load } from 'ts-dotenv';
 import axios from 'axios';
 import { promises as fs } from 'fs';
-const AWS = require('aws-sdk');
-const retry = require('async-retry');
+import * as AWS from 'aws-sdk';
+import retry from 'async-retry';
 import {ulid} from "ulid";
 
-const API = process.env.SERVICE_ENDPOINT+'/';
-const { TABLE } = process.env;
+const env = load({
+  SERVICE_ENDPOINT: String,
+  TABLE: String,
+});
+
+const API = env.SERVICE_ENDPOINT+'/';
+const { TABLE } = env;
 
 describe('When log files are uploaded to S3', () => {
-
 
   const sessionId = ulid();
 
@@ -22,7 +26,7 @@ describe('When log files are uploaded to S3', () => {
         url: `${API}sign-post?sessionId=${sessionIdIter}&filename=${filename}`,
       });
 
-      let form = new FormData();
+      const form = new FormData();
       Object.keys(response.data.data.fields).forEach(key => form.append(key, response.data.data.fields[key]));
       const file = await fs.readFile(__dirname + `/../test-${i}.log`, "binary");
       form.append('file', file);
@@ -44,7 +48,7 @@ describe('When log files are uploaded to S3', () => {
         const filename = `test-${i}.log`;
         await retry(async () => {
           const item = await getItem(sessionIdIter, filename);
-          const classification = JSON.parse(item.classification);
+          const classification = JSON.parse(item?.classification);
           if (i===1) {
             expect(classification).toEqual(
                   {
