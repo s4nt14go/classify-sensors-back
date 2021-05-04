@@ -45,6 +45,22 @@ We have to process the file in order to classify each sensor, so for the above i
   <img src="doc/architecture.png" />
 </p><br />
 
+### Techs used in this backend
+* Serverless Framework
+* Node, TypeScript
+* Jest
+* Axios
+
+AWS serverless:
+* Lambda
+* DynamoDB
+* SQS
+* S3
+* API Gateway
+
+CI/CD:
+* GitHub Actions
+
 # Frontend
 
 In [this repo](https://github.com/s4nt14go/classify-sensors-front) you can take a look at the frontend
