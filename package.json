@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "ts-node src/main.ts",
-    "test": "jest",
+    "test": "jest --verbose ./__tests__/main",
     "e2e-test": "jest --verbose ./__tests__/e2e",
     "exportEnv": "sls export-env"
   },
