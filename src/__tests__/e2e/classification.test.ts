@@ -7,11 +7,11 @@ import retry from 'async-retry';
 import {ulid} from "ulid";
 
 const env = load({
-  SERVICE_ENDPOINT: String,
+  API_URL: String,
   TABLE: String,
 });
 
-const API = env.SERVICE_ENDPOINT+'/';
+const API = env.API_URL+'/';
 const { TABLE } = env;
 
 describe('When log files are uploaded to S3', () => {

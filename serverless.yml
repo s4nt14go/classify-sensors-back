@@ -118,6 +118,13 @@ resources:
 
   Outputs:
 
-    ServiceEndpoint:
-      Export:
-        Name: API-Endpoint
+    ApiUrl:
+      Value:
+        !Join
+          - ''
+          - - 'https://'
+            - !Ref ApiGatewayRestApi
+            - '.execute-api.'
+            - ${opt:region, self:provider.region}
+            - '.amazonaws.com/'
+            - ${self:custom.stage}
