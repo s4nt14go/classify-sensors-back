@@ -63,4 +63,50 @@ CI/CD:
 
 # Frontend
 
-In [this repo](https://github.com/s4nt14go/classify-sensors-front) you can take a look at the frontend or go straight to the [demo site](https://prod--classify-sensors.netlify.app)!
+In [this repo](https://github.com/s4nt14go/classify-sensors-front) you can take a look at the frontend and the demo app!
+
+#### Deployment instructions
+
+1. Use Node 14 version as lambdas, using [nvm](https://github.com/nvm-sh/nvm) you can:
+
+    ```
+    # set Node 14 in current terminal
+    nvm use 14
+    # set Node 14 as default (new terminals will use 14)
+    nvm alias default 14
+    ```
+
+1. Install dependencies
+
+    ```shell script
+    npm ci
+    ```
+
+1. Run unit tests
+
+    ```shell script
+    npm test
+    ```
+
+1. Deploy on `dev`
+
+   Set up your AWS credentials for `dev` account and deploy:
+
+    ```shell script
+    npm run deploy
+    ```
+
+1. Run e2e tests
+
+    ```shell script
+    npm run exportEnv
+    npm run e2e-test
+    ```
+
+1. Deploy on `prod`
+
+   Set up your AWS credentials for `prod` account and deploy:
+
+    ```shell script
+    npm run deploy:prod
+    ```
