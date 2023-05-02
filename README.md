@@ -65,7 +65,7 @@ CI/CD:
 
 In [this repo](https://github.com/s4nt14go/classify-sensors-front) you can take a look at the frontend and the demo app!
 
-#### Deployment instructions
+# Deployment instructions
 
 1. Use Node 14 version as lambdas, using [nvm](https://github.com/nvm-sh/nvm) you can:
 
