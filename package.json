@@ -10,7 +10,9 @@
     "start": "ts-node src/main.ts",
     "test": "jest --verbose ./__tests__/main",
     "e2e-test": "jest --verbose ./__tests__/e2e",
-    "sls": "sls",
+    "deploy": "sls deploy",
+    "remove": "sls remove",
+    "deploy:prod": "sls deploy -s prod",
     "exportEnv": "sls export-env"
   },
   "devDependencies": {
