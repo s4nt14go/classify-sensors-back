@@ -1,4 +1,4 @@
-# Classify sensors
+# Classify sensors 
 
 We have a fleet of vehicles equipped with sensors for `loudness`, `bumpiness`, and `happiness`. The vehicles upload a file with this format:
 
